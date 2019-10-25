@@ -13,7 +13,7 @@ tar xzf ${1}.tar.gz
 mkdir home
 
 # launch the container
-singularity exec -H `pwd`/home -B `pwd`:/projects/LSSTsky:rw /cvmfs/gridpp.egi.eu/lsst/imsim_sandbox3/ /projects/LSSTsky/docker_run.sh python run_imsim_nersc.py --processes $4 --subset_index $3 --subset_size $4 --instcat $2 --outdir fits --config /projects/LSSTsky/parsl_imsim_configs
+singularity exec -H `pwd`/home -B `pwd`:/projects/LSSTsky:rw /cvmfs/gridpp.egi.eu/lsst/imsim_sandbox3/ /projects/LSSTsky/docker_run.sh python run_imsim_nersc.py --processes $4 --subset_index $3 --subset_size $4 --instcat $2 --outdir fits --ckpt_archive_dir fits/agn_ckpts/ --config /projects/LSSTsky/parsl_imsim_configs
 
 result=$?
 if [ $result -ne 0 ] ; then
