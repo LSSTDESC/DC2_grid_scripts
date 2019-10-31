@@ -38,10 +38,12 @@ for site in sites:
     instcatname = visit + ".tar.gz"
     insidename = 'phosim_cat_' + str(int(visit)) + '.txt'
 
-    startsensor = idx * 6
-    numsensors = 6
-    if idx == 41:
-        numsensors = 3
+    #startsensor = idx * 4
+    #numsensors = 4
+    #if idx == 47:
+    #    numsensors = 1
+    startsensor = idx
+    numsensors = 1
     
     args = visit + ' ' + insidename + ' ' + str(startsensor) + ' ' + str(numsensors) + ' ' + str(idx)
     outputname = 'fits_' + visit + '_' + str(idx) + '.tar'
@@ -51,9 +53,10 @@ for site in sites:
     j.stderr="std.err"
     j.stdout="std.out"
     #!!! May need the 2.1i directory here depending on visit number !!!
-    j.setInputSandbox(["runimsim2.1.sh","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.1.1i/" + instcatname])
+    j.setInputSandbox(["runimsim2.1.sh","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.1i/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["8Processors"])
+    #j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["IN2P3-CC-disk"])    
     j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
     j.setPlatform("AnyPlatform")
 

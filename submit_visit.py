@@ -1,12 +1,5 @@
 #!/usr/bin/env python
-# Submits a single visit (or a subset of a visit) to the grid for processing.
-# This does not integrate with the infrastructure used by jobmanager.py. Instead
-# the jobs must be checked on manually.
-# First argument is name of visit to submit, as an 8 digit number.
-# Further arguments are optional. If any are given, they are indices (0-47) of jobs
-# within that visit that should be submitted.
-# If none are given, all 48 jobs are submitted.
-# The job IDs are recorded in a file named 'visit_jobs_<visit>.txt'.
+# Python version of ImSim submission script
 
 import sys
 
@@ -30,16 +23,43 @@ for i in range(2, len(sys.argv)):
 if len(indices) == 0:
     for i in range(0, 48):
         indices.append(i)
+    
+#sensorfile = "/home/jperry/lsst_sensor_list.txt"
 
-# open a file to record a list of jobs for this visit
+# read sensor name list
+#sensorfile = open(sensorfile, 'r')
+#sensorlines = sensorfile.readlines()
+#sensorfile.close()
+#print "Read", len(sensorlines), "sensors from sensor list"
+
+
 joblistfile = open('visit_jobs_' + visit + '.txt', 'w')
 
+# turn it into blocks
+#sensorblocks = []
+#i = 0
+#while i < len(sensorlines):
+#    block = []
+#    n = len(sensorlines) - i
+#    if n > 4:
+#        n = 4
+#    for j in range(0, n):
+#        line = sensorlines[i + j].strip()
+#        block.append(line)
+#    sensorblocks.append(block)
+#    i = i + n
+#print "Read sensorblocks:", sensorblocks
+
+#idx = 0
+#for sensors in sensorblocks:
+#    if len(indices) == 0 or (idx in indices):
 for idx in indices:
     j = Job()
     j.setName("ImSim_" + visit + "_" + str(idx));
     
     instcatname = visit + ".tar.gz"
     insidename = 'phosim_cat_' + str(int(visit)) + '.txt'
+    #args = visit + ' ' + insidename + ' "' + sensorstring + '" 4'
 
     startsensor = idx * 4
     numsensors = 4
@@ -54,15 +74,14 @@ for idx in indices:
     j.stderr="std.err"
     j.stdout="std.out"
     #!!! May need the 2.1i directory here depending on visit number !!!
-    j.setInputSandbox(["runimsim2.1.sh","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.1i/" + instcatname])
+    j.setInputSandbox(["runimsim2.1.sh","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.1.1i/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
     j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
     j.setPlatform("AnyPlatform")
-
-    # FIXME: remove these once those sites are working again
     j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
     
+    #print("Would submit job for sensors", sensorstring)
     jobID = dirac.submitJob(j)
     print("Submitted job as ID " + str(jobID))
     print "Status is:", dirac.status(jobID['JobID'])

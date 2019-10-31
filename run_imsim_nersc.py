@@ -36,6 +36,11 @@ def run_imsim(instcat, workdir, outdir, processes, low_fidelity,
               node_id='node0', visit_index=0, log_level='INFO',
               ckpt_archive_dir=None, config=None):
 
+    from astropy.utils import iers
+    iers.conf.iers_auto_url = 'file:/projects/LSSTsky/finals2000A.all'
+    iers.conf.auto_max_age = None
+    #iers.conf.auto_download = False
+
     logger = desc.imsim.get_logger(log_level, 'run_imsim')
 
     cwd = os.getcwd()

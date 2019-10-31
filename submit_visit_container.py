@@ -54,14 +54,15 @@ for idx in indices:
     j.stderr="std.err"
     j.stdout="std.out"
     #!!! May need the 2.1i directory here depending on visit number !!!
-    j.setInputSandbox(["launch_container.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","LFN:/lsst/user/j/james.perry/2.2i_test/" + instcatname])
+    j.setInputSandbox(["launch_container.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","finals2000A.all","LFN:/lsst/user/j/james.perry/2.2i_test/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
     j.setOutputData([outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
-    j.setPlatform("AnyPlatform")
+    j.setPlatform("EL7")
 
     # FIXME: remove these once those sites are working again
-    j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
+    #j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
+    j.setDestination("LCG.RAL-LCG2.uk")
     
     jobID = dirac.submitJob(j)
     print("Submitted job as ID " + str(jobID))
