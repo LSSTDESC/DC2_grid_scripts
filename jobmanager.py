@@ -62,6 +62,12 @@ def submitImsimJob(dirac, joblist, visit, idx):
     if idx == 47:
         numsensors = 1
 
+    ivisit = int(visit)
+    if ivisit <= 991360:
+        year = 'y04'
+    else:
+        year = 'y05'
+        
     args = visit + ' ' + insidename + ' ' + str(startsensor) + ' ' + str(numsensors) + ' ' + str(idx)
     outputname = 'fits_' + visit + '_' + str(idx) + '.tar'
 
@@ -70,15 +76,16 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setExecutable('runimsim2.1.sh', arguments=args)
     j.stderr="std.err"
     j.stdout="std.out"
-    j.setInputSandbox(["runimsim2.1.sh","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.1.1i/" + instcatname])
+    j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
-    j.setTag(["4Processors"])
-    j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
-    j.setPlatform("AnyPlatform")
+    j.setTag(["8Processors"])
+    j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
+    #j.setPlatform("AnyPlatform")
+    j.setPlatform("EL7")
 
     # FIXME: remove this when these sites start working again
     #j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
-    j.setDestination("LCG.RAL-LCG2.uk")
+    #j.setDestination("LCG.RAL-LCG2.uk")
     
     jobID = dirac.submitJob(j)
 
