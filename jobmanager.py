@@ -55,7 +55,7 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setCPUTime(1209600)
 
     instcatname = visit + ".tar.gz"
-    insidename = 'phosim_cat_' + str(int(visit)) + '.txt'
+    insidename = visit + '/phosim_cat_' + str(int(visit)) + '.txt'
         
     startsensor = idx * 4
     numsensors = 4
