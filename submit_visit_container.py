@@ -58,6 +58,7 @@ for idx in indices:
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
     j.setOutputData([outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
+    #j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     j.setPlatform("EL7")
 
     # FIXME: remove these once those sites are working again

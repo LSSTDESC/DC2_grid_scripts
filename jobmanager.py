@@ -73,12 +73,12 @@ def submitImsimJob(dirac, joblist, visit, idx):
 
     print "Submitting ImSim job with arguments", args
     
-    j.setExecutable('runimsim2.1.sh', arguments=args)
+    j.setExecutable('launch_container.sh', arguments=args)
     j.stderr="std.err"
     j.stdout="std.out"
     j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
-    j.setTag(["8Processors"])
+    j.setTag(["4Processors"])
     j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     #j.setPlatform("AnyPlatform")
     j.setPlatform("EL7")

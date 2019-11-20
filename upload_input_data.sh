@@ -2,7 +2,7 @@
 # Upload input files from Cori to grid storage
 # Valid proxy and DIRAC environment are required for this to work
 
-srcbase="gsiftp://dtn01.nersc.gov/global/cscratch1/sd/descim/instcat_y04_191021"
+srcbase="gsiftp://dtn01.nersc.gov/global/cscratch1/sd/descim/instcat_y04_191109"
 lfnbase="/lsst/user/j/james.perry/instcats/2.2i/y04"
 se=UKI-NORTHGRID-LANCS-HEP-disk
 
