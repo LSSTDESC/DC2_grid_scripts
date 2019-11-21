@@ -85,7 +85,7 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setPlatform("EL7")
 
     # FIXME: remove this when these sites start working again
-    #j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
+    j.setBannedSites(["LCG.IN2P3-CC.fr", "LCG.UKI-SCOTGRID-ECDF.uk", "LCG.UKI-LT2-IC-HEP.uk", "LCG.UKI-NORTHGRID-LANCS-HEP.uk"])
     #j.setDestination("LCG.RAL-LCG2.uk")
     
     jobID = dirac.submitJob(j)
