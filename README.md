@@ -32,7 +32,9 @@ jobmanager.py maintains its state in a set of text files. The paths to these fil
  joblist.txt - contains a list of all the jobs currently in the system. Each line represents one job and contains the visit number (always 8 digits), the index number within the visit, and the Dirac job ID, separated by spaces. Before starting a new run, this should be created as an empty file.
  
  jobscompleted.txt - contains a list in exactly the same format as joblist.txt, but this time for completed jobs rather than active jobs. Again this should be created as an empty file before starting a new run.
- 
+
+ jobsfailed.txt - contains a list of all the jobs that have failed. For each one, the visit number, the index within the visit, the Dirac job ID and the site name are recorded.
+
  visitlist.txt - contains a list of visit IDs to process. Each line contains one 8 digit visit number. This is only read by the script, never written to. Before starting a new run, the visit IDs to be simulated should be put in here.
  
  visitposition.txt - contains a single number which keeps track of how many visits have already been submitted. Before starting a new run, this file should be initialised with "0".
@@ -49,7 +51,7 @@ How To Use The Client Script
 To get up and running with this script, you need to:
 
  1. Edit the file paths within jobmanager.py to point to the right directories.
- 2. Create joblist.txt, jobscompleted.txt and jobsites.txt as empty files.
+ 2. Create joblist.txt, jobscompleted.txt, jobsfailed.txt and jobsites.txt as empty files.
  3. Create visitlist.txt containing a list of all visit numbers to be processed.
  4. Create visitposition.txt containing the number 0.
  5. Run jobmanager.py!
@@ -87,4 +89,4 @@ It depends on a few additional files that are used on the worker node:
  - docker_run.sh is the top level script that runs inside the container. It sets up the environment for running ImSim, then changes to the right directory and invokes the ImSim driver script, which is the same as before.
  - parsl_imsim_configs is a configuration file passed to ImSim. It is the same one used for ImSim runs at NERSC and elsewhere.
 
-The image for the container is stored in Singularity's "sandbox" format (with the files stored in a normal directory tree rather than an image file) in /cvmfs/gridpp.egi.eu/lsst/imsim_sandbox/.
+The image for the container is stored in Singularity's "sandbox" format (with the files stored in a normal directory tree rather than an image file) in /cvmfs/gridpp.egi.eu/lsst/containers/Run2.2i-production-v1/.
