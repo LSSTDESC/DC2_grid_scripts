@@ -17,6 +17,7 @@ visitlist = "/home/jperry/visitlist.txt"
 visitposition = "/home/jperry/visitposition.txt"
 sitelistfile = "/home/jperry/jobsites.txt"
 resubmissionsfile = "/home/jperry/resubmissions.txt"
+failedlistfile = "/home/jperry/jobsfailed.txt"
 
 # how many jobs we should aim to have in the system at once
 DESIRED_JOB_COUNT = 50000
@@ -79,7 +80,7 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
-    j.setOutputData([visit + "/" + outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
+    j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     #j.setPlatform("AnyPlatform")
     j.setPlatform("EL7")
 
@@ -156,6 +157,7 @@ while not exitnow:
     failedlist = []
     completedlist = []
     sitelist = []
+    failedsitelist = {}
     submittedjobs = 0
     runningjobs = 0
     otherjobs = 0
@@ -177,6 +179,7 @@ while not exitnow:
         # if it failed, add it to the failed list
         if status == "Failed":
             failedlist.append(i);
+            failedsitelist[i[2]] = statuslist['Value'][i[2]]['Site']
         # if it completed, add it to the completed list
         elif status == "Done":
             completedlist.append(i)
@@ -199,9 +202,14 @@ while not exitnow:
 
     # process failed list
     for i in failedlist:
-        print "Job", i, "failed, resubmitting..."
+        print "Job", i, "failed at site", failedsitelist[i[2]], ", resubmitting..."
         # remove this job from the main list now
         removeJobFromList(joblist, i[2])
+
+        # append it to the failed list file
+        failfile = open(failedlistfile, 'a')
+        failfile.write(i[0] + " " + str(i[1]) + " " + str(i[2]) + " " + failedsitelist[i[2]] + "\n")
+        failfile.close()
 
         # resubmit it
         success = False

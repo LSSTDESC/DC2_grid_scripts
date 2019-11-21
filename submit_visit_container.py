@@ -39,7 +39,7 @@ for idx in indices:
     j.setName("ImSim_" + visit + "_" + str(idx));
     
     instcatname = visit + ".tar.gz"
-    insidename = 'phosim_cat_' + str(int(visit)) + '.txt'
+    insidename = visit + '/phosim_cat_' + str(int(visit)) + '.txt'
 
     startsensor = idx * 4
     numsensors = 4
@@ -54,17 +54,18 @@ for idx in indices:
     j.stderr="std.err"
     j.stdout="std.out"
     #!!! May need the 2.1i directory here depending on visit number !!!
-    j.setInputSandbox(["launch_container.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","finals2000A.all","LFN:/lsst/user/j/james.perry/2.2i_test/" + instcatname])
+    j.setInputSandbox(["launch_container.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","finals2000A.all","LFN:/lsst/user/j/james.perry/instcats/2.2i/y04/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
-    j.setOutputData([outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
+    j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     #j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     j.setPlatform("EL7")
 
     # FIXME: remove these once those sites are working again
     #j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
-    j.setDestination("LCG.RAL-LCG2.uk")
-    
+    #j.setDestination("LCG.RAL-LCG2.uk")
+    j.setDestination("LCG.IN2P3-CC.fr")   
+ 
     jobID = dirac.submitJob(j)
     print("Submitted job as ID " + str(jobID))
     print "Status is:", dirac.status(jobID['JobID'])
