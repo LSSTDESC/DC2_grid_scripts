@@ -6,9 +6,6 @@
 #  - number of processes to run
 #  - index number of job within visit
 
-# extract the instance catalogue
-tar xzf ${1}.tar.gz
-
 # create a home directory for the container
 mkdir home
 
