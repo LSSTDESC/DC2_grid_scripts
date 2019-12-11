@@ -77,7 +77,7 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setExecutable('launch_container.sh', arguments=args)
     j.stderr="std.err"
     j.stdout="std.out"
-    j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
+    j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","preprocess.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
     j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
@@ -85,7 +85,7 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.setPlatform("EL7")
 
     # FIXME: remove this when these sites start working again
-    j.setBannedSites(["LCG.IN2P3-CC.fr", "LCG.UKI-SCOTGRID-ECDF.uk", "LCG.UKI-LT2-IC-HEP.uk", "LCG.UKI-NORTHGRID-LANCS-HEP.uk"])
+    j.setBannedSites(["LCG.IN2P3-CC.fr", "LCG.UKI-SCOTGRID-ECDF.uk"])
     #j.setDestination("LCG.RAL-LCG2.uk")
     
     jobID = dirac.submitJob(j)
@@ -175,7 +175,8 @@ while not exitnow:
         # get status from Dirac
         if not i[2] in statuslist['Value']:
             status = "Missing"
-        status = statuslist['Value'][i[2]]['Status']
+	else:
+            status = statuslist['Value'][i[2]]['Status']
         # if it failed, add it to the failed list
         if status == "Failed":
             failedlist.append(i);

@@ -42,7 +42,7 @@ for idx in indices:
     insidename = visit + '/phosim_cat_' + str(int(visit)) + '.txt'
 
     startsensor = idx * 4
-    numsensors = 4
+    numsensors = 2
     if idx == 47:
         numsensors = 1
     
@@ -50,21 +50,23 @@ for idx in indices:
     outputname = 'fits_' + visit + '_' + str(idx) + '.tar'
     
     j.setCPUTime(1209600)
-    j.setExecutable('launch_container.sh', arguments=args)
+    j.setExecutable('launch_container2.sh', arguments=args)
     j.stderr="std.err"
     j.stdout="std.out"
     #!!! May need the 2.1i directory here depending on visit number !!!
-    j.setInputSandbox(["launch_container.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","finals2000A.all","LFN:/lsst/user/j/james.perry/instcats/2.2i/y04/" + instcatname])
+    j.setInputSandbox(["launch_container2.sh","docker_run.sh","run_imsim_nersc.py","parsl_imsim_configs","finals2000A.all","LFN:/lsst/user/j/james.perry/instcats/2.2i/y04/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
     j.setTag(["4Processors"])
-    j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
+    j.setOutputData([outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
     #j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
     j.setPlatform("EL7")
 
     # FIXME: remove these once those sites are working again
     #j.setBannedSites(["VAC.UKI-NORTHGRID-MAN-HEP.uk", "LCG.IN2P3-CC.fr"])
+    #j.setDestination("LCG.UKI-LT2-IC-HEP.uk")
+    j.setDestination("LCG.UKI-SOUTHGRID-OX-HEP.uk")
     #j.setDestination("LCG.RAL-LCG2.uk")
-    j.setDestination("LCG.IN2P3-CC.fr")   
+    #j.setDestination("LCG.IN2P3-CC.fr")   
  
     jobID = dirac.submitJob(j)
     print("Submitted job as ID " + str(jobID))
