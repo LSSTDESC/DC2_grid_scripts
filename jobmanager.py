@@ -79,13 +79,15 @@ def submitImsimJob(dirac, joblist, visit, idx):
     j.stdout="std.out"
     j.setInputSandbox(["launch_container.sh", "docker_run.sh", "parsl_imsim_configs","run_imsim_nersc.py","preprocess.py","LFN:/lsst/user/j/james.perry/instcats/2.2i/" + year + "/" + instcatname])
     j.setOutputSandbox(["std.out","std.err"])
-    j.setTag(["4Processors"])
+    j.setTag(["8Processors"])
     j.setOutputData([outputname], outputPath="", outputSE=["IN2P3-CC-disk"])
+    #j.setOutputData([outputname], outputPath="", outputSE=["UKI-NORTHGRID-LANCS-HEP-disk"])
     #j.setPlatform("AnyPlatform")
     j.setPlatform("EL7")
 
     # FIXME: remove this when these sites start working again
-    j.setBannedSites(["LCG.IN2P3-CC.fr", "LCG.UKI-SCOTGRID-ECDF.uk"])
+    #j.setBannedSites(["LCG.IN2P3-CC.fr", "LCG.UKI-SCOTGRID-ECDF.uk"])
+    j.setBannedSites(["LCG.UKI-SCOTGRID-ECDF.uk"])
     #j.setDestination("LCG.RAL-LCG2.uk")
     
     jobID = dirac.submitJob(j)

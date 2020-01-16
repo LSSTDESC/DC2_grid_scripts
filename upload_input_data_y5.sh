@@ -4,7 +4,8 @@
 
 srcbase="gsiftp://dtn01.nersc.gov/global/cscratch1/sd/descim/instcat_y05_191109"
 lfnbase="/lsst/user/j/james.perry/instcats/2.2i/y05"
-se=UKI-NORTHGRID-LANCS-HEP-disk
+#se=UKI-NORTHGRID-LANCS-HEP-disk
+se=UKI-LT2-IC-HEP-disk
 
 if [ $# -ne 1 ] ; then
     echo "Usage: upload_input_data.sh <list file>"
