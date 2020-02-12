@@ -58,10 +58,10 @@ def submitImsimJob(dirac, joblist, visit, idx):
     instcatname = visit + ".tar.gz"
     insidename = visit + '/phosim_cat_' + str(int(visit)) + '.txt'
         
-    startsensor = idx * 4
+    startsensor = idx
     numsensors = 4
-    if idx == 47:
-        numsensors = 1
+    #if idx == 47:
+    #    numsensors = 1
 
     ivisit = int(visit)
     if ivisit <= 991360:
@@ -101,8 +101,10 @@ def submitImsimJob(dirac, joblist, visit, idx):
 
 # submit a whole batch of jobs for a complete visit
 def submitBatch(dirac, joblist, visit):
+    # WARNING: this is currently setup to generate only the "missing" Run2.2i data
+    # and will need to be modified to be able to perform an entire run
     print "*** Submitting jobs for", visit, "***"
-    for i in range(0, 48):
+    for i in range(0, 35):
         submitImsimJob(dirac, joblist, visit, i)
 
 
