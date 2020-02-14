@@ -74,8 +74,18 @@ for i in jobids:
       # investigate application errors in more detail
       print "Investigating job", i, "application error"
       os.system("dirac-wms-job-get-output " + str(i))
-      os.system("echo " + str(i) + " >> applicationerrors.txt")
-      os.system("cat " + str(i) + "/Script1_launch_container.sh.log >> applicationerrors.txt")
+      f = open(str(i) + "/Script1_launch_container.sh.log", "r")
+      outputlines = f.readlines()
+      f.close()
+      cvmfsProblem = False
+      for line in outputlines:
+         if line.find("Image path /cvmfs/gridpp.egi.eu/lsst/containers/Run2.2i-production-v2/ doesn't exist") >= 0:
+            print("CVMFS directory not found!")
+            cvmfsProblem = True
+            break
+      if not cvmfsProblem:
+         os.system("echo " + str(i) + " >> applicationerrors.txt")
+         os.system("cat " + str(i) + "/Script1_launch_container.sh.log >> applicationerrors.txt")
       os.system("rm -rf " + str(i))
    
 # print out site stats
