@@ -81,7 +81,7 @@ Containerisation
 ----------------
 Everything described above is the old method for running ImSim, based on a manual installation of ImSim and its dependencies on CVMFS. It is also possible to run it in a container via Singularity.
 
-Currently, the main submission script has not been updated to support containers yet, but there is a test script that supports them. This is submit_visit_container.py. It works just the same as submit_visit.py but runs ImSim in a Singularity container.
+The main submission script (jobmanager.py) has been updated to support containers. There is also a test script that supports them, submit_visit_container.py. It works just the same as submit_visit.py but runs ImSim in a Singularity container.
 
 It depends on a few additional files that are used on the worker node:
 
@@ -89,4 +89,4 @@ It depends on a few additional files that are used on the worker node:
  - docker_run.sh is the top level script that runs inside the container. It sets up the environment for running ImSim, then changes to the right directory and invokes the ImSim driver script, which is the same as before.
  - parsl_imsim_configs is a configuration file passed to ImSim. It is the same one used for ImSim runs at NERSC and elsewhere.
 
-The image for the container is stored in Singularity's "sandbox" format (with the files stored in a normal directory tree rather than an image file) in /cvmfs/gridpp.egi.eu/lsst/containers/Run2.2i-production-v1/.
+The image for the container is stored in Singularity's "sandbox" format (with the files stored in a normal directory tree rather than an image file) in /cvmfs/gridpp.egi.eu/lsst/containers/Run2.2i-production-v2/.

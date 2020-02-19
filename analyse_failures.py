@@ -62,6 +62,8 @@ if not 'Value' in statuslist:
    print "Error getting job status from DIRAC!"
    sys.exit(1)
 
+cvmfsProblemCount = 0
+
 # tally up minor status
 for i in jobids:
    minorstatus = statuslist['Value'][i]['MinorStatus']
@@ -82,6 +84,7 @@ for i in jobids:
          if line.find("Image path /cvmfs/gridpp.egi.eu/lsst/containers/Run2.2i-production-v2/ doesn't exist") >= 0:
             print("CVMFS directory not found!")
             cvmfsProblem = True
+            cvmfsProblemCount = cvmfsProblemCount + 1
             break
       if not cvmfsProblem:
          os.system("echo " + str(i) + " >> applicationerrors.txt")
@@ -136,4 +139,4 @@ for site in sitefailures.keys():
 for minorstatus in minorstatuses.keys():
    print "Minor status", minorstatus, "accounted for", minorstatuses[minorstatus], "failed jobs"
 
-   
+print "CVMFS problem accounted for", cvmfsProblemCount, "failed jobs"   
